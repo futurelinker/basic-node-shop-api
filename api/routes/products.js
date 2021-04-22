@@ -2,6 +2,11 @@ const express = require("express");
 
 const router = express.Router();
 
+// Create – POST
+// Read – GET
+// Update – PUT/PATCH // PUT Requires entire entity for update resource in origin / PATCH updates partial 
+// Delete – DELETE
+
 router.get("/", (req, res, next) => {
   res.status(200).json({
     message: "GET products",
@@ -9,8 +14,14 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
+  console.log(req.body);
+  const product = {
+    name: req.body.name,
+    price: req.body.price,
+  }
   res.status(201).json({
     message: "POST product",
+    createdProduct: product
   });
 });
 

@@ -9,8 +9,14 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
+  console.log(req.body);
+  const order = {
+    productId: req.body.productId,
+    qty: req.body.qty
+  }
   res.status(201).json({
     message: "POST orders",
+    order: order
   });
 });
 
