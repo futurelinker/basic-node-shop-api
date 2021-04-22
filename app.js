@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -6,6 +7,24 @@ const morgan = require("morgan");
 
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+
+mongoose
+  .connect(
+    "mongodb+srv://futurelink:admin123@node-rest-shop.yy7re.mongodb.net/node-rest-shop?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then((result) => {
+    console.log("Database connected -> " + result.connections[0].name);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+// remove deprecation message
+mongoose.Promise = global.Promise;
 
 // middlewares
 app.use(morgan("dev"));
@@ -17,9 +36,12 @@ app.use((req, res, next) => {
   // Append headers
   // ('*') Stands for any origin
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  if(req.method === 'OPTIONS') {
-    res.header("Access-Control-Allow-Methods", 'GET, POST, PUT, PATCH, DELETE');
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
     return res.status(200).json({});
   }
   next();
