@@ -4,3 +4,4 @@ node_modules
 # misc
 package-lock.json
 nodemon.json
+.env

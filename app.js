@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+require('dotenv').config(); //for setting environment variables on server
+
 const app = express();
 
 const morgan = require("morgan");
@@ -8,14 +10,14 @@ const morgan = require("morgan");
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
+const uri = process.env.ATLAS_URI;
+
 mongoose
-  .connect(
-    "mongodb+srv://futurelink:admin123@node-rest-shop.yy7re.mongodb.net/node-rest-shop?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
   .then((result) => {
     console.log("Database connected -> " + result.connections[0].name);
   })
