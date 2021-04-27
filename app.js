@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-require('dotenv').config(); //for setting environment variables on server
+require("dotenv").config(); //for setting environment variables on server
 
 const app = express();
 
