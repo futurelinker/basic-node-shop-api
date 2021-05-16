@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const orders = require("../models/orders");
 
 const router = express.Router();
 
@@ -11,7 +10,8 @@ const Product = require("../models/products");
 // Methods
 router.get("/", (req, res, next) => {
   Order.find()
-    .select("product qty id") // select the key you want to return
+    .select("product qty _id") // select the key's you want to return
+    .populate("product") // autopopulate data for related document
     .exec()
     .then((docs) => {
       console.log(docs);
@@ -77,6 +77,7 @@ router.post("/", (req, res, next) => {
 
 router.get("/:orderId", (req, res, next) => {
   Order.findById(req.params.orderId)
+    .populate("product") // autopopulate data for related document
     .exec()
     .then((order) => {
       if (!order) {
@@ -104,14 +105,14 @@ router.delete("/:orderId", (req, res, next) => {
     _id: req.params.orderId,
   })
     .exec()
-    .then(result => {
+    .then((result) => {
       res.status(200).json({
         message: "Order deleted",
         request: {
           type: "POST",
-          body: { productId: "ID", qty: "Number" }
-        }
-      })
+          body: { productId: "ID", qty: "Number" },
+        },
+      });
     })
     .catch((err) => {
       res.status(500).json({
